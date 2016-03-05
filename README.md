@@ -1,14 +1,9 @@
 find-bower-min
 ===============
 
-Made to be used with Gulp. 
-Based on asset type, get bower min files in bower main files.
-If no minified version is found for some files, these file names will be available as a array so you can minify them yourself.
-
-配合Gulp一起使用，获取bower里面所有的项目min.js或min.css，如果没有找到min则返回notFound数组，可对这些文件单独处理。
-
-It uses [main-bower-files](https://www.npmjs.com/package/main-bower-files), manipulates the result and checks for the
-availability of a minimized version (in the bower package).
+- Made to be used with Gulp. 
+- Based on asset type, get bower min files in bower main files.
+- If no min files is found, return these files as a array so you can minify them yourself.
 
 ## Installation
 
@@ -18,11 +13,13 @@ availability of a minimized version (in the bower package).
 
 ## Usage
 
-Require the module and get a set of asset files by giving two paramenters: First paramenter is the non-mimified file extension,
-like 'js' or 'css'. Second parameter (optional) is the minified file extension, like 'min.js' or 'min.css'.
-Here is a usage with JavaScript files:
+Require two paramenters: 
 
-两个参数，第一个是压缩或编译前的后缀，第二个是压缩或编译后的后缀。
+- First paramenter is the non-mimified file extension,like 'js' or 'css'. 
+- Second parameter (optional) is the minified file extension, like 'min.js' or 'min.css'.
+
+**Find min.js**
+
 
 ```js
 var findBowerMin = require('find-bower-min');
@@ -34,7 +31,7 @@ var notFound = findMinJs.minNotFound;
 
 ## Example with Gulp
 
-**JavaScript files Example:**
+**Find all min.js in bower_components**
 
 ```js
 var concat = require('gulp-concat');
@@ -54,12 +51,11 @@ gulp.task('minJs', function() {
 });
 ```
 
-**CSS files Example:**
+**Find all min.css in bower_components**
 
 ```js
 var concat = require('gulp-concat'),
     minifyCss = require("gulp-minify-css"),
-    less = require('gulp-less'),
     merge2 = require('merge2'),
     ignore = require('gulp-ignore'),
     findBowerMin = require('find-bower-min');
@@ -70,13 +66,13 @@ gulp.task('minCss', function() {
   return merge2(
     gulp.src(findMinCss.min),
     gulp.src(findMinCss.minNotFound)
-        .pipe(ignore.include('*.less'))
-        .pipe(less())
+        .pipe(ignore.include('*.css'))
         .pipe(minifyCss())
   )
     .pipe(concat('app.min.css'))
     .pipe(gulp.dest('dest/css'))
 });
+```
 
 ## Issues
 
