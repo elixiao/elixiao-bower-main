@@ -1,0 +1,10 @@
+{
+  "name": "elixiao-bower-main",
+  "version": "0.2.14",
+  "author": "elixiao",
+  "description": "copy from bower-main",
+  "main": "index.js",
+  "dependencies": {
+    "main-bower-files": "2.5.0"
+  }
+}
