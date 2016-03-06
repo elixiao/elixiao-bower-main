@@ -2,8 +2,8 @@ find-bower-min
 ===============
 
 - Made to be used with Gulp. 
-- Based on asset type, get bower min files in bower main files.
-- If no min files is found, return these files as a array so you can minify them yourself.
+- Based on type, get bower min files in bower main files.
+- If min files are not found, return main files as a array so you can minify them yourself.
 
 ## Installation
 
@@ -29,6 +29,9 @@ var minJs = findMinJs.min;
 var notFound = findMinJs.minNotFound;
 ```
 
+
+
+
 ## Example with Gulp
 
 **Find all min.js in bower_components**
@@ -49,6 +52,20 @@ gulp.task('minJs', function() {
     .pipe(concat('app.min.js'))
     .pipe(gulp.dest('dest/js'))
 });
+```
+
+**Want some min.js in specified order?(so you can concat them in sequence)**
+
+```js
+// jquery is before angular now
+var findMinJs = findBowerMin('js','min.js',["jquery","angular"]); 
+```
+
+**Only want some specified min.js files?**
+
+```js
+// only find min.js of files specified in the array.
+var findMinJs = findBowerMin('js','min.js',["jquery","angular","angular-ui-router","ocLazyLoad","js-yaml"],true); 
 ```
 
 **Find all min.css in bower_components**
