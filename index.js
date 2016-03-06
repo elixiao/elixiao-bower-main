@@ -55,7 +55,7 @@ module.exports = function (extension, minifiedExtension, orderArray, partial) {
                 var dir3 = minFilename.replace("/less/","/dist/css/");
                 var dir4 = minFilename.replace("/scss/","/dist/css/");
                 if (fs.existsSync(minFilename)) return minFilename
-                else if(fs.existsSync(dir1)) {console.log(dir1);return dir1}
+                else if(fs.existsSync(dir1)) return dir1
                 else if(fs.existsSync(dir2)) return dir2
                 else if(fs.existsSync(dir3)) return dir3
                 else if(fs.existsSync(dir4)) return dir4
