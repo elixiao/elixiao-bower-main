@@ -1,6 +1,6 @@
 {
   "name": "find-bower-min",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "find all min files in bower_components",
   "main": "index.js",
   "repository": {

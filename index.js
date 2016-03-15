@@ -11,7 +11,8 @@ module.exports = function (extension, minifiedExtension, orderArray, partial) {
     result.normal = mainBowerFiles().filter(function (filename) {
       return filename.match(matchExtension)
     });
-
+    
+    var ignoreList = []
     if(orderArray) {
         var ordered = [];
         var notOrdered = [];
@@ -31,18 +32,37 @@ module.exports = function (extension, minifiedExtension, orderArray, partial) {
         if(partial) {
             result.normal = ordered;
         }else {
-            result.normal.forEach(function (orderElement) {
+            result.normal.forEach(function (normalElement) {
                 var flag = false
                 ordered.forEach(function (filename) {
-                    if(orderElement.toLowerCase()==filename.toLowerCase()) {
+                    if(normalElement.toLowerCase()==filename.toLowerCase()) {
                         flag = true;
                         return
                     }
                 })
-                if(!flag) notOrdered.push(orderElement);
+                if(!flag) {
+                    var remove = false
+                    orderArray.forEach(function (orderElement) {
+                        var str = orderElement
+                        if(orderElement.charAt(0)=="!")  {
+                            if(isWin) {
+                                str = '\\' + orderElement.toLowerCase().substr(1,orderElement.length-1) +'\\';
+                            }else {
+                                str = '/' + orderElement.toLowerCase().substr(1,orderElement.length-1) +'/';
+                            }
+                            if(normalElement.indexOf(str)!=-1) {
+                                remove = true
+                                ignoreList.push(normalElement)
+                                return
+                            }
+                        }
+                    });
+                    if(!remove) notOrdered.push(normalElement);
+                }
             })
             ordered.push.apply(ordered,notOrdered);
             result.normal = ordered;
+            result.ignore = ignoreList;
         }
     }
 
@@ -50,10 +70,18 @@ module.exports = function (extension, minifiedExtension, orderArray, partial) {
         if (minifiedExtension=="min.css") {
             tmpFiles = result.normal.map(function (orgFilename) {
                 var minFilename = orgFilename.replace(filenameWithoutExtension, '$1.' + minifiedExtension);
-                var dir1 = minFilename.replace("/less/","/css/");
-                var dir2 = minFilename.replace("/scss/","/css/");
-                var dir3 = minFilename.replace("/less/","/dist/css/");
-                var dir4 = minFilename.replace("/scss/","/dist/css/");
+                var dir1,dir2,dir3,dir4;
+                if(isWin) {
+                    dir1 = minFilename.replace("\\less\\","\\css\\");
+                    dir2 = minFilename.replace("\\scss\\","\\css\\");
+                    dir3 = minFilename.replace("\\less\\","\\dist\\css\\");
+                    dir4 = minFilename.replace("\\scss\\","\\dist\\css\\");
+                }else {
+                    dir1 = minFilename.replace("/less/","/css/");
+                    dir2 = minFilename.replace("/scss/","/css/");
+                    dir3 = minFilename.replace("/less/","/dist/css/");
+                    dir4 = minFilename.replace("/scss/","/dist/css/");
+                }
                 if (fs.existsSync(minFilename)) return minFilename
                 else if(fs.existsSync(dir1)) return dir1
                 else if(fs.existsSync(dir2)) return dir2

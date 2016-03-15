@@ -65,7 +65,14 @@ var findMinJs = findBowerMin('js','min.js',["jquery","angular"]);
 
 ```js
 // only find min.js of files specified in the array.
-var findMinJs = findBowerMin('js','min.js',["jquery","angular","angular-ui-router","ocLazyLoad","js-yaml"],true); 
+var findMinJs = findBowerMin('js','min.js',["jquery","angular","angular-ui-router","ocLazyLoad"],true); 
+```
+
+**Want to ignore some file?(maybe you want to lazyload them later)**
+
+```js
+// ignore angular-file-upload and js-yaml
+var findMinJs = findBowerMin('js','min.js',["!angular-file-upload","!js-yaml"]);
 ```
 
 **Find all min.css in bower_components**
